@@ -310,6 +310,7 @@
 								<li rel="tab1" class="sidemenu {% if( activeTab == 'tab1' ) %} active {% endif %}"><i class="fc_icons fa fa-user"></i> <span class="tabs-text">&nbsp;Your Profile</span></li>
 								<li rel="tab2" class="sidemenu {% if( activeTab == 'tab2' ) %} active {% endif %}"><i class="fc_icons fas fa-file"></i> <span class="tabs-text">&nbsp;Document Center</span>{% if( paymentmanagementdata.newpromnotestatus == 0 ) %} <span style="color: #cc0000;float:right;padding-top:4px;font-size:22px;"><i class="fas fa-exclamation-circle"></i></span> {% endif %}</li>
 								<li rel="tab3" class="sidemenu {% if( activeTab == 'tab3' ) %} active {% endif %}"><i class="fc_icons fa fa-briefcase"></i> <span class="tabs-text">&nbsp;Financing Details</span></li>
+								<li rel="tab4" class="sidemenu {% if( activeTab == 'tab4' ) %} active {% endif %}"><i class="fc_icons fa fa-briefcase"></i> <span class="tabs-text">&nbsp;To Make a Payment</span></li>
 							</ul>
 
 
@@ -378,37 +379,102 @@
 												</div>
 											</div>
 										</div>
-
-									</div>
+										
+										{% if achDocslength %}
+										<hr/>
+										<div class="dashboardUserDocs dashboard-grid" style="">
+											<div class="dashboardLoanDetailsTitles">
+												<strong>&nbsp;&nbsp;Uploaded Documents</strong>
+												<hr style="margin-right: 0;"/>
+											</div>
+											<!-- list and download link to all agreement documents -->
+											{% for documentt in achDocs %}
+											<div>
+												<div class="displayDocs">
+													<div class="doc-item">{{ documentt.docname }}</div>
+													<div class="doc-item"><div><a href="{{ documentt.proofdocument.standardResolution }}" target="_blank"><i class="fas fa-file-download"></i></a></div></div>
+												</div>
+											</div>
+											{% endfor %}
+										</div>
+										{% endif %}
 								</div>
 
 
-								<div id="tab3" class="tab_content">
-									<div class="dashboardTitles main-container"><strong>Financing</strong></div>
-									<hr/>
+							</div>
 
-									<!-- Financing Details Body -->
-									<div style="margin: auto;padding-bottom: 50px;">
-										<!-- Short Financing Details -->
+							<div id="tab3" class="tab_content">
+								<div class="dashboardTitles main-container"><strong>Financing</strong></div>
+								<hr/>
+
+								<!-- Financing Details Body -->
+								<div style="margin: auto;padding-bottom: 50px;">
+									<!-- Short Financing Details -->
+									<div class="loanDetailsTableDivs">
+										<div class="jh table-content isa-contract-section last-item-border flex-box-table-row">
+											<div class="flex-box-item flex-box-table-col">
+												<div class="flex-box-item header-item">
+													Financing Reference
+												</div>
+												<div class="flex-box-item">
+													{{ paymentmanagementdata.loanReference }}
+												</div>
+											</div>
+											<div class="flex-box-item flex-box-table-col">
+												<div class="flex-box-item header-item">
+													Name
+												</div>
+												<div class="flex-box-item">
+													{{ userName }}
+												</div>
+											</div>
+											<div class="flex-box-item flex-box-table-col">
+												<div class="flex-box-item header-item">
+													Amount Financed
+												</div>
+												<div class="flex-box-item">
+													${{ paymentmanagementdata.payOffAmount }}
+												</div>
+											</div>
+											<div class="flex-box-item flex-box-table-col">
+												<div class="flex-box-item header-item">
+													Status
+												</div>
+												<div class="flex-box-item">
+													{% if( paymentmanagementdata.status == "PENDING" ) %}
+														Pending
+													{% elseif( paymentmanagementdata.status == "FUNDED" ) %}
+														Funded
+													{% else %}
+														Under Review
+													{% endif %}
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- Financing Details -->
+									<div class="dashboardLoanDetailsTitles">
+										<div class="plusMinusToggleFormat">
+											<!-- <i class="fas fa-plus hoverPointer" id="togglePlusLoanDetails" data-toggle="collapse" data-target="#loanDetails" onclick="toggleLoanDetails()"></i> -->
+											<!-- <i class="fas fa-minus hoverPointer" id="toggleMinusLoanDetails" style="display: none;" data-toggle="collapse" data-target="#LoanDetails" onclick="toggleLoanDetails()"></i> -->
+										</div>
+										<div id="dashboardTitles"><strong>Financing Details</strong></div>
+										<!-- <p class="hoverPointer" data-toggle="collapse" data-target="#loanDetails" onclick="toggleLoanDetails()"><strong>&nbsp;&nbsp;Loan Details</strong></p> -->
+										<hr/>
+									</div>
+									<!-- Financing Details Table -->
+									<div id="loanDetails">
 										<div class="loanDetailsTableDivs">
-											<div class="jh table-content isa-contract-section last-item-border flex-box-table-row">
-												<div class="flex-box-item flex-box-table-col">
-													<div class="flex-box-item header-item">
+											<div class="jh table-content isa-contract-details-section last-item-border flex-box-table-col">
+												<div class="flex-box-table-row">
+													<div class="flex-box-item flex-box-item header-item">
 														Financing Reference
 													</div>
 													<div class="flex-box-item">
 														{{ paymentmanagementdata.loanReference }}
 													</div>
 												</div>
-												<div class="flex-box-item flex-box-table-col">
-													<div class="flex-box-item header-item">
-														Name
-													</div>
-													<div class="flex-box-item">
-														{{ userName }}
-													</div>
-												</div>
-												<div class="flex-box-item flex-box-table-col">
+												<div class="flex-box-item flex-box-table-row">
 													<div class="flex-box-item header-item">
 														Amount Financed
 													</div>
@@ -416,141 +482,108 @@
 														${{ paymentmanagementdata.payOffAmount }}
 													</div>
 												</div>
-												<div class="flex-box-item flex-box-table-col">
+												<div class="flex-box-item flex-box-table-row">
 													<div class="flex-box-item header-item">
-														Status
+														Interest Rate
 													</div>
 													<div class="flex-box-item">
-														{% if( paymentmanagementdata.status == "PENDING" ) %}
-															Pending
-														{% elseif( paymentmanagementdata.status == "FUNDED" ) %}
-															Funded
-														{% else %}
-															Under Review
-														{% endif %}
+														{{ paymentmanagementdata.interestapplied }}%
 													</div>
 												</div>
-											</div>
-										</div>
-										<!-- Financing Details -->
-										<div class="dashboardLoanDetailsTitles">
-											<div class="plusMinusToggleFormat">
-												<!-- <i class="fas fa-plus hoverPointer" id="togglePlusLoanDetails" data-toggle="collapse" data-target="#loanDetails" onclick="toggleLoanDetails()"></i> -->
-												<!-- <i class="fas fa-minus hoverPointer" id="toggleMinusLoanDetails" style="display: none;" data-toggle="collapse" data-target="#LoanDetails" onclick="toggleLoanDetails()"></i> -->
-											</div>
-											<div id="dashboardTitles"><strong>Financing Details</strong></div>
-											<!-- <p class="hoverPointer" data-toggle="collapse" data-target="#loanDetails" onclick="toggleLoanDetails()"><strong>&nbsp;&nbsp;Loan Details</strong></p> -->
-											<hr/>
-										</div>
-										<!-- Financing Details Table -->
-										<div id="loanDetails">
-											<div class="loanDetailsTableDivs">
-												<div class="jh table-content isa-contract-details-section last-item-border flex-box-table-col">
-													<div class="flex-box-table-row">
-														<div class="flex-box-item flex-box-item header-item">
-															Financing Reference
-														</div>
-														<div class="flex-box-item">
-															{{ paymentmanagementdata.loanReference }}
-														</div>
+												<div class="flex-box-item flex-box-table-row">
+													<div class="flex-box-item header-item">
+														APR
 													</div>
-													<div class="flex-box-item flex-box-table-row">
-														<div class="flex-box-item header-item">
-															Amount Financed
-														</div>
-														<div class="flex-box-item">
-															${{ paymentmanagementdata.payOffAmount }}
-														</div>
-													</div>
-													<div class="flex-box-item flex-box-table-row">
-														<div class="flex-box-item header-item">
-															Interest Rate
-														</div>
-														<div class="flex-box-item">
-															{{ paymentmanagementdata.interestapplied }}%
-														</div>
-													</div>
-													<div class="flex-box-item flex-box-table-row">
-														<div class="flex-box-item header-item">
-															APR
-														</div>
-														<div class="flex-box-item">
-															{{ paymentmanagementdata.apr }}%
-														</div>
-													</div>
-													<div class="flex-box-item flex-box-table-row">
-														<div class="flex-box-item header-item">
-															Financing Term
-														</div>
-														<div class="flex-box-item">
-															{{ loanTerm }} months
-														</div>
-													</div>
-													<div class="flex-box-item flex-box-table-row">
-														<div class="flex-box-item header-item">
-															Maturity Date
-														</div>
-														<div class="flex-box-item">
-															{{ paymentmanagementdata.maturityDate }}
-														</div>
+													<div class="flex-box-item">
+														{{ paymentmanagementdata.apr }}%
 													</div>
 												</div>
-											</div>
-										</div>
-										<!-- Payment Schedule -->
-										<div class="dashboardLoanDetailsTitles">
-
-											<div class="plusMinusToggleFormat">
-												<i class="fas fa-plus hoverPointer togglePlusPaymentSchedule" id="togglePlusPaymentSchedule" data-toggle="collapse"  data-target="#paymentSchedule"  onclick="togglePaymentSchedule()"></i>
-												<i class="fas fa-minus hoverPointer togglePlusPaymentSchedule" style="display: none;" id="toggleMinusPaymentSchedule" data-toggle="collapse" data-target="#paymentSchedule"  onclick="togglePaymentSchedule()"></i>
-											</div>
-											<div class="dashboardTitles hoverPointer" data-toggle="collapse"  data-target="#paymentSchedule" onclick="togglePaymentSchedule()"><strong>Payment Schedule</strong></div>
-											<hr/>
-										</div>
-										<!-- Payment Schedule Table -->
-										<div class="payment-schedule-wrapper">
-											<div id="paymentSchedule" class="collapse">
-												{% if paymentmanagementdata and paymentmanagementdata.paymentSchedule %}
-												<div class="loanDetailsTableDivs">
-													{% for paymentScheduleItem in paymentmanagementdata.paymentSchedule  %}
-													<div class="jh table-content isa-contract-section payment-schedule-section last-item-border flex-box-table-row">
-														<div class="flex-box-item flex-box-table-col">
-															<div class="flex-box-item header-item">
-																Number
-															</div>
-															<div class="flex-box-item">
-																{{loop.index}}
-															</div>
-														</div>
-														<div class="flex-box-item flex-box-table-col">
-															<div class="flex-box-item header-item">
-																Amount (USD)
-															</div>
-															<div class="flex-box-item">
-																{{ paymentScheduleItem.amount | $format(true,2) }}
-															</div>
-														</div>
-														<div class="flex-box-item flex-box-table-col">
-															<div class="flex-box-item header-item">
-																Schedule Date
-															</div>
-															<div class="flex-box-item">
-																{{ paymentScheduleItem.date }}
-															</div>
-														</div>
-
+												<div class="flex-box-item flex-box-table-row">
+													<div class="flex-box-item header-item">
+														Financing Term
 													</div>
-													{% endfor %}
+													<div class="flex-box-item">
+														{{ loanTerm }} months
+													</div>
 												</div>
-												{% else %}
-													<p align="center" >No Payment Schedule due to Denied Application</p>
-												{% endif %}
+												<div class="flex-box-item flex-box-table-row">
+													<div class="flex-box-item header-item">
+														Maturity Date
+													</div>
+													<div class="flex-box-item">
+														{{ paymentmanagementdata.maturityDate }}
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
+									<!-- Payment Schedule -->
+									<div class="dashboardLoanDetailsTitles">
 
+										<div class="plusMinusToggleFormat">
+											<i class="fas fa-plus hoverPointer togglePlusPaymentSchedule" id="togglePlusPaymentSchedule" data-toggle="collapse"  data-target="#paymentSchedule"  onclick="togglePaymentSchedule()"></i>
+											<i class="fas fa-minus hoverPointer togglePlusPaymentSchedule" style="display: none;" id="toggleMinusPaymentSchedule" data-toggle="collapse" data-target="#paymentSchedule"  onclick="togglePaymentSchedule()"></i>
+										</div>
+										<div class="dashboardTitles hoverPointer" data-toggle="collapse"  data-target="#paymentSchedule" onclick="togglePaymentSchedule()"><strong>Payment Schedule</strong></div>
+										<hr/>
+									</div>
+									<!-- Payment Schedule Table -->
+									<div class="payment-schedule-wrapper">
+										<div id="paymentSchedule" class="collapse">
+											{% if paymentmanagementdata and paymentmanagementdata.paymentSchedule %}
+											<div class="loanDetailsTableDivs">
+												{% for paymentScheduleItem in paymentmanagementdata.paymentSchedule  %}
+												<div class="jh table-content isa-contract-section payment-schedule-section last-item-border flex-box-table-row">
+													<div class="flex-box-item flex-box-table-col">
+														<div class="flex-box-item header-item">
+															Number
+														</div>
+														<div class="flex-box-item">
+															{{loop.index}}
+														</div>
+													</div>
+													<div class="flex-box-item flex-box-table-col">
+														<div class="flex-box-item header-item">
+															Amount (USD)
+														</div>
+														<div class="flex-box-item">
+															{{ paymentScheduleItem.amount | $format(true,2) }}
+														</div>
+													</div>
+													<div class="flex-box-item flex-box-table-col">
+														<div class="flex-box-item header-item">
+															Schedule Date
+														</div>
+														<div class="flex-box-item">
+															{{ paymentScheduleItem.date }}
+														</div>
+													</div>
+
+												</div>
+												{% endfor %}
+											</div>
+											{% else %}
+												<p align="center" >No Payment Schedule due to Denied Application</p>
+											{% endif %}
+										</div>
+									</div>
 								</div>
 
+							</div>
+								<!-- Make a Payment Tab4 -->
+							<div id="tab4" class="tab_content">
+								<div class="dashboardTitles main-container"><strong>To Make a Payment</strong></div>
+								<hr/>
+
+								<div id="dashboardUserInfo" class="dashboard-grid last-item-border flex-box-table-col">
+									<br>
+									<div>
+										<a class="btn btn-info" href="http://modernhealthfinance.com/manage-account/" target="_blank">Click here to manage your account</a>
+									</div>
+
+									<br>
+									<p>You can also <a href="http://www.PayMHF.com/" target="_blank"><u>click here</u></a> to have your payment instructions.</p>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -669,15 +702,19 @@ document.addEventListener( "DOMContentLoaded", function() {
 	var tab1 = $("ul.tabs li[rel=tab1]").hasClass( "active" );
 	var tab2 = $("ul.tabs li[rel=tab2]").hasClass( "active" );
 	var tab3 = $("ul.tabs li[rel=tab3]").hasClass( "active" );
+	var tab4 = $("ul.tabs li[rel=tab4]").hasClass( "active" );
 	$tab1 = $("#tab1");
 	$tab2 = $("#tab2");
 	$tab3 = $("#tab3");
+	$tab4 = $("#tab4");
 	$tab1.hide();
 	$tab2.hide();
 	$tab3.hide();
+	$tab4.hide();
 	if( tab1 ) $tab1.show();
 	if( tab2 ) $tab2.show();
 	if( tab3 ) $tab3.show();
+	if( tab4 ) $tab4.show();
 } );
 function promnoteModalOpen() {
 	setTimeout( initSigPads, 500 );
