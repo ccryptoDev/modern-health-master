@@ -345,10 +345,10 @@ function sendProcedureConfirmedEmail(data) {
 			const emailData =	{
 				hostName: mailerConfig.hostName,
 				toEmail: user.email,
-				accountNum: paymentmanagement.loanReference,
+				accountNum: paymentmanagement.loanReference.replace('LN','MHF'),
 				practiceName: practicemanagement.PracticeName,
 				financedAmount: paymentmanagement.finalpayoffAmount,
-				procedureDate: paymentmanagement.procedureConfirmedDate,
+				procedureDate: paymentmanagement.createdAt,
 				monthlyPayment: paymentmanagement.paymentSchedule[0].amount,
 				firstPaymentDate: paymentmanagement.paymentSchedule[0].date,
 				borrower: {
