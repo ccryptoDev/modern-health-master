@@ -610,6 +610,7 @@ function showAllPendingAchAction(req, res) {
 
 function showAllOpenApplicationAchAction(req, res) {
 	const responseData = _.assign({}, setupRequestDataForDataTableList(req), { viewStatus: "Pending" });
+	console.log(responseData);
 	res.view("admin/pendingach/OpenAchList", responseData);
 }
 function showInCompleteApplicationAch(req, res) {
@@ -4063,7 +4064,6 @@ function completeApplication(req, res) {
 	if ("undefined" !== req.param("viewtype") && req.param("viewtype") != '' && req.param("viewtype") != null) {
 		viewtype = req.param("viewtype");
 	}
-	const page = parseInt(req.query.currentPage) || 1;
 	// defines the query for the database call
 	if (viewtype == "approved") {
 		options = {
@@ -4201,9 +4201,9 @@ function completeApplication(req, res) {
 			if (checklimitrecords < totalrecords) {
 				iDisplayLengthvalue = parseInt(req.query.iDisplayLength) + parseInt(skiprecord);
 			}
-			if (viewtype != "pending") {
+			// if (viewtype != "pending") {
 				paymentmanagementdata = paymentmanagementdata.slice(skiprecord, iDisplayLengthvalue);
-			}
+			// }
 
 			//Final output starts here
 			const pendinguser = [];
