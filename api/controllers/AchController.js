@@ -2091,20 +2091,23 @@ function getAchUserDetailsAction(req, res) {
 																																					//set up fxi score
 																																					let ficoScore = 0;
 																																					let incomeEstimator = 0;
-
-																																					_.forEach(transData.addOnProduct, (element) => {
-																																						if (element.code == "00W18") {
-																																							ficoScore = element.scoreModel.score.results;
-																																							if (ficoScore[0] == "+" || ficoScore[0] == "-")
-																																								ficoScore = ficoScore.substring(1);
-																																						}
-																																						if (element.code == "00N03" && !element.scoreModel.score.noScoreReason) {
-																																							incomeEstimator = element.scoreModel.score.results;
-
-																																							if (incomeEstimator[0] == "+" || incomeEstimator == "-")
-																																								incomeEstimator = incomeEstimator.substring(1);
-																																						}
-																																					})
+																																					
+																																					if(transData){
+																																						_.forEach(transData.addOnProduct, (element) => {
+																																							if (element.code == "00W18") {
+																																								ficoScore = element.scoreModel.score.results;
+																																								if (ficoScore[0] == "+" || ficoScore[0] == "-")
+																																									ficoScore = ficoScore.substring(1);
+																																							}
+																																							if (element.code == "00N03" && !element.scoreModel.score.noScoreReason) {
+																																								incomeEstimator = element.scoreModel.score.results;
+	
+																																								if (incomeEstimator[0] == "+" || incomeEstimator == "-")
+																																									incomeEstimator = incomeEstimator.substring(1);
+																																							}
+																																						})
+																																					}
+																																					
 
 																																					ficoScore = Number(ficoScore);
 																																					incomeEstimator = Number(incomeEstimator);

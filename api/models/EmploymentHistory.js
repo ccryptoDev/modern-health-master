@@ -198,6 +198,7 @@ module.exports = {
                 if( !data ) {
                     return resolve( {} );           // Return {} instaed of throw err because employment is almost empty and too many errs whill occur.
                 }
+                
                 if((typeof data.jobStartDate !== 'string') && data.jobStartDate){
                     data.jobStartDate = data.jobStartDate.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
                 }
