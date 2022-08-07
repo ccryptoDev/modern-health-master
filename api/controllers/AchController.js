@@ -610,7 +610,6 @@ function showAllPendingAchAction(req, res) {
 
 function showAllOpenApplicationAchAction(req, res) {
 	const responseData = _.assign({}, setupRequestDataForDataTableList(req), { viewStatus: "Pending" });
-	console.log(responseData);
 	res.view("admin/pendingach/OpenAchList", responseData);
 }
 function showInCompleteApplicationAch(req, res) {
