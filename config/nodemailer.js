@@ -4,7 +4,7 @@ const sails = require('sails');
 const prodConfig = require(`./env/production`);
 const prodApiKey = (prodConfig && prodConfig.sandGridApiKey);
 const currentEnv = sails.config["environment"];
-const currentEnvConfig = require(`./env/${currentEnv}`);
+const currentEnvConfig = require(`./env/${currentEnv}.js`);
 const ApiKey = (currentEnvConfig && currentEnvConfig.sandGridApiKey) || prodApiKey;
 
 if(!ApiKey || typeof ApiKey !== "string")

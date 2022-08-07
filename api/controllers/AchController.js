@@ -2090,20 +2090,23 @@ function getAchUserDetailsAction(req, res) {
 																																					//set up fxi score
 																																					let ficoScore = 0;
 																																					let incomeEstimator = 0;
-
-																																					_.forEach(transData.addOnProduct, (element) => {
-																																						if (element.code == "00W18") {
-																																							ficoScore = element.scoreModel.score.results;
-																																							if (ficoScore[0] == "+" || ficoScore[0] == "-")
-																																								ficoScore = ficoScore.substring(1);
-																																						}
-																																						if (element.code == "00N03" && !element.scoreModel.score.noScoreReason) {
-																																							incomeEstimator = element.scoreModel.score.results;
-
-																																							if (incomeEstimator[0] == "+" || incomeEstimator == "-")
-																																								incomeEstimator = incomeEstimator.substring(1);
-																																						}
-																																					})
+																																					
+																																					if(transData){
+																																						_.forEach(transData.addOnProduct, (element) => {
+																																							if (element.code == "00W18") {
+																																								ficoScore = element.scoreModel.score.results;
+																																								if (ficoScore[0] == "+" || ficoScore[0] == "-")
+																																									ficoScore = ficoScore.substring(1);
+																																							}
+																																							if (element.code == "00N03" && !element.scoreModel.score.noScoreReason) {
+																																								incomeEstimator = element.scoreModel.score.results;
+	
+																																								if (incomeEstimator[0] == "+" || incomeEstimator == "-")
+																																									incomeEstimator = incomeEstimator.substring(1);
+																																							}
+																																						})
+																																					}
+																																					
 
 																																					ficoScore = Number(ficoScore);
 																																					incomeEstimator = Number(incomeEstimator);
@@ -4063,7 +4066,6 @@ function completeApplication(req, res) {
 	if ("undefined" !== req.param("viewtype") && req.param("viewtype") != '' && req.param("viewtype") != null) {
 		viewtype = req.param("viewtype");
 	}
-	const page = parseInt(req.query.currentPage) || 1;
 	// defines the query for the database call
 	if (viewtype == "approved") {
 		options = {
@@ -4201,9 +4203,9 @@ function completeApplication(req, res) {
 			if (checklimitrecords < totalrecords) {
 				iDisplayLengthvalue = parseInt(req.query.iDisplayLength) + parseInt(skiprecord);
 			}
-			if (viewtype != "pending") {
+			// if (viewtype != "pending") {
 				paymentmanagementdata = paymentmanagementdata.slice(skiprecord, iDisplayLengthvalue);
-			}
+			// }
 
 			//Final output starts here
 			const pendinguser = [];
